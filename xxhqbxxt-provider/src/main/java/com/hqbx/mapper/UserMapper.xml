@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hqbx.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.hqbx.model.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="vxid" jdbcType="INTEGER" property="vxid" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="code" jdbcType="INTEGER" property="code" />
+    <result column="vxsysId" jdbcType="INTEGER" property="vxsysid" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, vxid, openid, code, vxsysId, tel
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+    <select id="getUserByUid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where vxid = #{uid,jdbcType=INTEGER}
+    </select>
+
+    <select id="getUserList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user order by id DESC
+    </select>
+
+    <select id="getUserByOpenid" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where openid= #{openid,jdbcType=VARCHAR}
+    </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hqbx.model.User">
+    insert into user (id, vxid, openid, 
+      code, vxsysId, tel)
+    values (#{id,jdbcType=INTEGER}, #{vxid,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR},
+      #{code,jdbcType=INTEGER}, #{vxsysid,jdbcType=INTEGER}, #{tel,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hqbx.model.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="vxid != null">
+        vxid,
+      </if>
+      <if test="openid != null">
+        openid,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="vxsysid != null">
+        vxsysId,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="vxid != null">
+        #{vxid,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null">
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=INTEGER},
+      </if>
+      <if test="vxsysid != null">
+        #{vxsysid,jdbcType=INTEGER},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hqbx.model.User">
+    update user
+    <set>
+      <if test="vxid != null">
+        vxid = #{vxid,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null">
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=INTEGER},
+      </if>
+      <if test="vxsysid != null">
+        vxsysId = #{vxsysid,jdbcType=INTEGER},
+      </if>
+      <if test="tel != null">
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hqbx.model.User">
+    update user
+    set vxid = #{vxid,jdbcType=INTEGER},
+      openid = #{openid,jdbcType=VARCHAR},
+      code = #{code,jdbcType=INTEGER},
+      vxsysId = #{vxsysid,jdbcType=INTEGER},
+      tel = #{tel,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

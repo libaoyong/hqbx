@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hqbx.mapper.BxformMapper">
+  <resultMap id="BaseResultMap" type="com.hqbx.model.Bxform">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="info" jdbcType="VARCHAR" property="info" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="ztid" jdbcType="INTEGER" property="ztid" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="mid" jdbcType="INTEGER" property="mid" />
+    <result column="bxlx" jdbcType="VARCHAR" property="bxlx" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, info, address, time, ztid, img, uid, mid, bxlx
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bxform
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+    <select id="getBxformList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from bxform order by id DESC
+    </select>
+
+    <select id="getTimeGroup" resultMap="BaseResultMap">
+       select time from bxform GROUP BY time
+    </select>
+
+    <select id="getBxformByuid" parameterType="java.util.Date" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from bxform
+        where time = #{date,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="getBxformBymid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from bxform
+        where mid = #{id,jdbcType=INTEGER} order by id DESC
+    </select>
+
+    <select id="getNumByDate" parameterType="java.util.Date" resultType="java.lang.Integer">
+        select COUNT(*) from bxform where time = #{date,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="getNum" resultType="java.lang.Integer">
+        select COUNT(*) from bxform
+    </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bxform
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hqbx.model.Bxform">
+    insert into bxform (id, info, address, 
+      time, ztid, img, 
+      uid, mid, bxlx)
+      values (#{id,jdbcType=INTEGER}, #{info,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+      #{time,jdbcType=TIMESTAMP}, #{ztid,jdbcType=INTEGER}, #{img,jdbcType=VARCHAR}, 
+      #{uid,jdbcType=INTEGER}, #{mid,jdbcType=INTEGER}, #{bxlx,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hqbx.model.Bxform">
+    insert into bxform
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="info != null">
+        info,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="ztid != null">
+        ztid,
+      </if>
+      <if test="img != null">
+        img,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="mid != null">
+        mid,
+      </if>
+      <if test="bxlx != null">
+        bxlx,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="info != null">
+        #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ztid != null">
+        #{ztid,jdbcType=INTEGER},
+      </if>
+      <if test="img != null">
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="mid != null">
+        #{mid,jdbcType=INTEGER},
+      </if>
+      <if test="bxlx != null">
+        #{bxlx,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hqbx.model.Bxform">
+    update bxform
+    <set>
+      <if test="info != null">
+        info = #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ztid != null">
+        ztid = #{ztid,jdbcType=INTEGER},
+      </if>
+      <if test="img != null">
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="mid != null">
+        mid = #{mid,jdbcType=INTEGER},
+      </if>
+      <if test="bxlx != null">
+        bxlx = #{bxlx,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hqbx.model.Bxform">
+    update bxform
+    set info = #{info,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      ztid = #{ztid,jdbcType=INTEGER},
+      img = #{img,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=INTEGER},
+      mid = #{mid,jdbcType=INTEGER},
+      bxlx = #{bxlx,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <update id="initBxform" parameterType="com.hqbx.model.Bxform">
+    update bxform
+    set mid is null
+    ztid = 0
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

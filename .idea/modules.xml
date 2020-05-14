@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/xxhqbxxt.iml" filepath="$PROJECT_DIR$/.idea/xxhqbxxt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xxhqbxxt-consumer/xxhqbxxt-consumer.iml" filepath="$PROJECT_DIR$/xxhqbxxt-consumer/xxhqbxxt-consumer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xxhqbxxt-interfacer/xxhqbxxt-interfacer.iml" filepath="$PROJECT_DIR$/xxhqbxxt-interfacer/xxhqbxxt-interfacer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xxhqbxxt-provider/xxhqbxxt-provider.iml" filepath="$PROJECT_DIR$/xxhqbxxt-provider/xxhqbxxt-provider.iml" />
+    </modules>
+  </component>
+</project>

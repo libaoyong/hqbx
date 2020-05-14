@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="cn" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>欢迎使用学校后勤保修系统</title>
+	<link th:href="@{/css/auth.css}" rel="stylesheet" type="text/css" />
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+			var hm = document.createElement("script");
+			hm.src = "https://hm.baidu.com/hm.js?2b7db9022335369e82240682131c24e0";
+			var s = document.getElementsByTagName("script")[0];
+			s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+
+</head>
+
+<body>
+	<div class="lowin">
+		<div class="lowin-brand">
+			<img th:src="@{/images/kodinger.jpg}" alt="logo"/>
+		</div>
+		<div class="lowin-wrapper">
+			<div class="lowin-box lowin-login">
+				<div class="lowin-box-inner">
+					<form action="/login" method="post">
+						<p>请登录以继续</p>
+						<div class="lowin-group">
+							<label>用户名 </label>
+							<input type="text" autocomplete="text" name="username" class="lowin-input" required>
+						</div>
+						<div class="lowin-group password-group">
+							<label>密码</label>
+							<input type="password" name="password" autocomplete="current-password" class="lowin-input" required>
+						</div>
+						<button class="lowin-btn login-btn" type="submit">
+							登录
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
