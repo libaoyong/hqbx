@@ -121,7 +121,6 @@ public class JumpController {
     @RequestMapping("/login")
     public String login(HttpServletRequest httpServletRequest, @RequestParam("username") String username, @RequestParam("password") String password, Model model) {
         HttpSession session = httpServletRequest.getSession();
-        password = UtilPacket.Md5MD5String(password);
         int qxz=2;
         Admin admin = adminService.getAdminByUname(username);
         if (admin!=null){
@@ -135,7 +134,7 @@ public class JumpController {
                 {
                     model.addAttribute("error","对不起您访问的用户组不存在或已被删除");
                     session.invalidate();
-                    return "errpage";
+                    return "login";
                 }
                 String quanxian = groupinfo.getQx();
                 String qx[] = {};
@@ -160,12 +159,12 @@ public class JumpController {
             }
             else
             {
-                model.addAttribute("error","密码错误!");
-                return "errpage";
+                model.addAttribute("error","密码错误");
+                return "login";
             }
         }
         else if (username.equals("admin")){
-            if (password.equals(UtilPacket.Md5MD5String("admin"))){
+            if (password.equals("admin")){
                 qxz=1;
                 Admin admin1 = new Admin();
                 admin1.setId(0);
@@ -177,7 +176,7 @@ public class JumpController {
                 {
                     model.addAttribute("error","对不起您访问的用户组不存在或已被删除");
                     session.invalidate();
-                    return "errpage";
+                    return "login";
                 }
                 String quanxian = groupinfo.getQx();
                 String qx[] = {};
@@ -196,7 +195,7 @@ public class JumpController {
             }
             else {
                 model.addAttribute("error","密码错误");
-                return "errpage";
+                return "login";
             }
         }
         else {
@@ -212,7 +211,7 @@ public class JumpController {
                     {
                         model.addAttribute("error","对不起您访问的用户组不存在或已被删除");
                         session.invalidate();
-                        return "errpage";
+                        return "login";
                     }
                     String quanxian = groupinfo.getQx();
                     String qx[] = {};
@@ -237,13 +236,13 @@ public class JumpController {
                 }
                 else
                 {
-                    model.addAttribute("error","密码错误!");
-                    return "errpage";
+                    model.addAttribute("error","密码错误");
+                    return "login";
                 }
             }
             else {
-                model.addAttribute("error","账户不存在!");
-                return "errpage";
+                model.addAttribute("error","账户不存在");
+                return "login";
             }
         }
     }

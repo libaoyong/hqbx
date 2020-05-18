@@ -60,7 +60,7 @@
             </a>
             <dl class="layui-nav-child">
               <dd th:if="${users.uname}!='admin'"><a lay-href="/resetpassword">修改密码</a></dd>
-              <dd><a href="/logout">退出</a></dd>
+              <dd><a onclick="logout()">退出</a></dd>
             </dl>
           </li>
 
@@ -89,7 +89,7 @@
             </li>
             <!--end权限中心-->
             <li data-name="get" class="layui-nav-item">
-              <a href="/logout" lay-tips="安全退出" lay-direction="2">
+              <a lay-tips="安全退出" lay-direction="2" onclick="logout()">
                 <i class="layui-icon layui-icon-vercode"></i>
                 <cite>安全退出</cite>
               </a>
@@ -140,7 +140,15 @@
     base:'/layuiadmin/'//静态资源所在路径
   }).extend({
     index: 'lib/index' //主入口模块
-  }).use('index');
+  }).use(['index','layer'],function () {
+  });
+  function logout() {
+    var layer = layui.layer;
+    layer.confirm('确定退出么', function(index){
+      layer.close(index);
+      window.location.href="/logout";
+    });
+  }
   </script>
 
 </body>

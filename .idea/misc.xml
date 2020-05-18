@@ -12,9 +12,8 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/xxhqbxxt-provider/pom.xml" />
-        <option value="$PROJECT_DIR$/xxhqbxxt-interfacer/pom.xml" />
         <option value="$PROJECT_DIR$/xxhqbxxt-consumer/pom.xml" />
+        <option value="$PROJECT_DIR$/xxhqbxxt-interfacer/pom.xml" />
       </list>
     </option>
   </component>

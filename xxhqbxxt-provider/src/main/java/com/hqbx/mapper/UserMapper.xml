@@ -8,9 +8,12 @@
     <result column="code" jdbcType="INTEGER" property="code" />
     <result column="vxsysId" jdbcType="INTEGER" property="vxsysid" />
     <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="sname" jdbcType="VARCHAR" property="sname" />
+    <result column="xy" jdbcType="VARCHAR" property="xy" />
+    <result column="zy" jdbcType="VARCHAR" property="zy" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, vxid, openid, code, vxsysId, tel
+    id, vxid, openid, code, vxsysId, tel,sname,xy,zy
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -69,6 +72,16 @@
       <if test="tel != null">
         tel,
       </if>
+      <if test="sname != null">
+        sname,
+      </if>
+      <if test="xy != null">
+        xy,
+      </if>
+      <if test="zy != null">
+        zy,
+      </if>
+
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -89,6 +102,15 @@
       <if test="tel != null">
         #{tel,jdbcType=VARCHAR},
       </if>
+      <if test="sname != null">
+        #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="xy != null">
+        #{xy,jdbcType=VARCHAR},
+      </if>
+      <if test="zy != null">
+        #{zy,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hqbx.model.User">
@@ -108,6 +130,15 @@
       </if>
       <if test="tel != null">
         tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="sname != null">
+        sname = #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="xy != null">
+        xy = #{xy,jdbcType=VARCHAR},
+      </if>
+      <if test="zy != null">
+        zy = #{zy,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

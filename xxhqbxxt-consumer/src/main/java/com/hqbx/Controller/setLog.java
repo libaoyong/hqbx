@@ -30,4 +30,15 @@ public class setLog {
         }
         return false;
     }
+
+    static public boolean setlod(Integer czr,String caozuo){
+            Date date = new Date(System.currentTimeMillis()+(8*60*60*1000));
+            Log log = new Log();
+            log.setCz(caozuo);
+            log.setCzr(czr);
+            log.setTime(date);
+            if (logService.insertSelective(log)!=0)
+                return true;
+            return false;
+    }
 }

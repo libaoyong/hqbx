@@ -48,7 +48,7 @@ public class SelectController {
                     String cz = log.getCz();
                     int czr = log.getCzr();
                     Date time = log.getTime();
-                    String czrstr ="用户";
+                    String czrstr ="System";
                     if (adminService.getAdminById(czr)!=null) {
                         czrstr = adminService.getAdminById(czr).getUname();
                     }
@@ -247,11 +247,14 @@ public class SelectController {
         List<Map<String, Object>> list = new ArrayList<>();
         if (users != null) {
             for (User user : users) {
-                int id = user.getId();
-                int vxid = user.getVxid();
-                int code = user.getCode();
+                Integer id = user.getId();
+                Integer vxid = user.getVxid();
+                Integer code = user.getCode();
                 String openid = user.getOpenid();
                 String tel = user.getTel();
+                String sname = user.getSname();
+                String xy = user.getXy();
+                String zy = user.getZy();
                 String codestr = "错误！";
                 if (code==0){
                     codestr="不是本校生或教职工";
@@ -262,12 +265,18 @@ public class SelectController {
                 if (code==2){
                     codestr="本校教职工";
                 }
+                if (code==5){
+                    codestr="用户未认证";
+                }
                 Map map = new HashMap();
                 map.put("id", id);
                 map.put("vxid", vxid);
                 map.put("code", codestr);
                 map.put("openid", openid);
                 map.put("tel", tel);
+                map.put("sname", sname);
+                map.put("xy", xy);
+                map.put("zy", zy);
                 list.add(map);
             }
         }
@@ -390,53 +399,55 @@ public class SelectController {
     public Map<String, Object> selectgdfpBywxg(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
         UserInfo userInfo  = (UserInfo) session.getAttribute("islogin");
-        int wxgid = userInfo.getId();
-        List<Bxform> bxforms = bxformService.getBxformBymid(wxgid);
         List<Map<String, Object>> list = new ArrayList<>();
-        if (bxforms != null) {
-            for (Bxform bxform : bxforms) {
-                int id = bxform.getId();
-                int uid = bxform.getUid();
-                int ztid = bxform.getZtid();
-                String address = bxform.getAddress();
-                String bxlx = bxform.getBxlx();
-                String img = bxform.getImg();
-                int mid = bxform.getMid();
-                Date time = bxform.getTime();
-                String uidstr = "查无此人";
-                String ztstr = "状态服务错误";
-                int uidcode = userService.getUserByUid(uid).getCode();
-                //1学生2教师
-                if (uidcode==2){
-                    uidstr = teacherService.getTeacherById(uid).getUname();
+        if (userInfo!=null) {
+            Integer wxgid = userInfo.getId();
+            List<Bxform> bxforms = bxformService.getBxformBymid(wxgid);
+            if (bxforms != null) {
+                for (Bxform bxform : bxforms) {
+                    int id = bxform.getId();
+                    int uid = bxform.getUid();
+                    int ztid = bxform.getZtid();
+                    String address = bxform.getAddress();
+                    String bxlx = bxform.getBxlx();
+                    String img = bxform.getImg();
+                    int mid = bxform.getMid();
+                    Date time = bxform.getTime();
+                    String uidstr = "查无此人";
+                    String ztstr = "状态服务错误";
+                    int uidcode = userService.getUserByUid(uid).getCode();
+                    //1学生2教师
+                    if (uidcode == 2) {
+                        uidstr = teacherService.getTeacherById(uid).getUname();
+                    }
+                    if (uidcode == 1) {
+                        uidstr = studentService.getStudentByid(uid).getUname();
+                    }
+                    //0未处理1已分配维修工2维修工已确认3订单完成
+                    if (ztid == 0) {
+                        ztstr = "未处理";
+                    }
+                    if (ztid == 1) {
+                        ztstr = "已分配维修工";
+                    }
+                    if (ztid == 2) {
+                        ztstr = "维修工已确认";
+                    }
+                    if (ztid == 3) {
+                        ztstr = "订单完成";
+                    }
+                    String midstr = maintainerService.getMaintainerById(mid).getUname();
+                    Map map = new HashMap();
+                    map.put("id", id);
+                    map.put("uid", uidstr);
+                    map.put("ztid", ztstr);
+                    map.put("address", address);
+                    map.put("bxlx", bxlx);
+                    map.put("img", img);
+                    map.put("mid", midstr);
+                    map.put("time", 1900 + time.getYear() + "年" + time.getMonth() + "月" + time.getDate() + "日 " + time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds());
+                    list.add(map);
                 }
-                if (uidcode==1){
-                    uidstr = studentService.getStudentByid(uid).getUname();
-                }
-                //0未处理1已分配维修工2维修工已确认3订单完成
-                if (ztid==0){
-                    ztstr="未处理";
-                }
-                if (ztid==1){
-                    ztstr="已分配维修工";
-                }
-                if (ztid==2){
-                    ztstr="维修工已确认";
-                }
-                if (ztid==3){
-                    ztstr="订单完成";
-                }
-                String midstr = maintainerService.getMaintainerById(mid).getUname();
-                Map map = new HashMap();
-                map.put("id", id);
-                map.put("uid", uidstr);
-                map.put("ztid", ztstr);
-                map.put("address", address);
-                map.put("bxlx", bxlx);
-                map.put("img", img);
-                map.put("mid", midstr);
-                map.put("time",1900+time.getYear()+"年"+time.getMonth()+"月"+time.getDate()+"日 "+time.getHours()+":"+time.getMinutes()+":"+time.getSeconds());
-                list.add(map);
             }
         }
         Map<String, Object> map1 = new HashMap<>();
@@ -447,6 +458,7 @@ public class SelectController {
         setLog.setlod(httpServletRequest, "查询了全部工单信息数据");
         return map1;
     }
+
 
     @RequestMapping("/selectgdfpBywfp")
     public Map<String, Object> selectgdfpBywfp(HttpServletRequest httpServletRequest) {
@@ -499,9 +511,6 @@ public class SelectController {
                              @RequestParam(value = "newpass2")String newpass2,
                              HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
-        oldpass = UtilPacket.Md5MD5String(oldpass);
-        newpass = UtilPacket.Md5MD5String(newpass);
-        newpass2 = UtilPacket.Md5MD5String(newpass2);
         int code = 500;
         String msg= "账号服务器错误！";
         UserInfo users = (UserInfo) session.getAttribute("islogin");

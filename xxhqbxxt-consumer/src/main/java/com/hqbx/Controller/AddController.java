@@ -92,7 +92,7 @@ public class AddController {
         Maintainer maintainer = new Maintainer();
         maintainer.setId(mid);
         maintainer.setUname(mname);
-        maintainer.setPass(UtilPacket.Md5MD5String("123456"));
+        maintainer.setPass("123456");
         if(maintainerService.insertMaintainer(maintainer)!=0) {
             setLog.setlod(httpServletRequest, "添加工号为"+mid+"的维修工账号");
             return "添加成功，请关闭窗口";
@@ -112,7 +112,7 @@ public class AddController {
         Admin admin = new Admin();
         admin.setId(mid);
         admin.setUname(mname);
-        admin.setPass(UtilPacket.Md5MD5String("123456"));
+        admin.setPass("123456");
         if(adminService.insertAdmin(admin)!=0) {
             setLog.setlod(httpServletRequest, "添加工号为"+mid+"的管理员账号");
             return "添加成功，请关闭窗口";

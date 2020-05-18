@@ -15,6 +15,12 @@ public class User implements Serializable {
 
     private String tel;
 
+    private String sname;
+
+    private String xy;
+
+    private String zy;
+
     public Integer getId() {
         return id;
     }
@@ -63,6 +69,30 @@ public class User implements Serializable {
         this.tel = tel == null ? null : tel.trim();
     }
 
+    public String getSname() {
+        return sname;
+    }
+
+    public void setSname(String sname) {
+        this.sname = sname == null ? null : sname.trim();
+    }
+
+    public String getXy() {
+        return xy;
+    }
+
+    public void setXy(String xy) {
+        this.xy = xy == null ? null : xy.trim();
+    }
+
+    public String getZy() {
+        return zy;
+    }
+
+    public void setZy(String zy) {
+        this.zy = zy == null ? null : zy.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -75,6 +105,9 @@ public class User implements Serializable {
         sb.append(", code=").append(code);
         sb.append(", vxsysid=").append(vxsysid);
         sb.append(", tel=").append(tel);
+        sb.append(", sname=").append(sname);
+        sb.append(", xy=").append(xy);
+        sb.append(", zy=").append(zy);
         sb.append("]");
         return sb.toString();
     }

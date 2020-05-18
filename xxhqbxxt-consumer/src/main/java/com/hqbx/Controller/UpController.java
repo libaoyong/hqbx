@@ -39,7 +39,7 @@ public class UpController {
         if (qx == 1){
             Admin admin = adminService.getAdminById(id);
             if (admin!=null){
-                admin.setPass(UtilPacket.Md5MD5String("123456"));
+                admin.setPass("123456");
                 if (adminService.upAdmin(admin) != 0) {
                     setLog.setlod(httpServletRequest, "重置了" + id + "管理员的密码");
                     return true;
@@ -49,7 +49,7 @@ public class UpController {
         else if (qx==2){
             Maintainer maintainer = maintainerService.getMaintainerById(id);
             if (maintainer != null) {
-                maintainer.setPass(UtilPacket.Md5MD5String("123456"));
+                maintainer.setPass("123456");
                 if (maintainerService.upMaintainer(maintainer) != 0) {
                     setLog.setlod(httpServletRequest, "重置了" + id + "维修工的密码");
                     return true;
@@ -241,7 +241,6 @@ public class UpController {
 
     @RequestMapping("/uppass")
     public boolean uppass( @RequestParam(value = "newpass") String newpass,HttpServletRequest httpServletRequest) {
-        newpass = UtilPacket.Md5MD5String(newpass);
         HttpSession session = httpServletRequest.getSession();
         UserInfo users = (UserInfo) session.getAttribute("islogin");
         int qx = users.getQx();

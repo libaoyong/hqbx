@@ -1,10 +1,7 @@
 package com.hqbx.Controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.hqbx.model.Bxform;
-import com.hqbx.model.Student;
-import com.hqbx.model.Teacher;
-import com.hqbx.model.User;
+import com.hqbx.model.*;
 import com.hqbx.service.BxformService;
 import com.hqbx.service.StudentService;
 import com.hqbx.service.TeacherService;
@@ -12,8 +9,10 @@ import com.hqbx.service.UserService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @RestController
@@ -46,11 +45,13 @@ public class WxController {
                 Map map = new HashMap();
                 map.put("id", user1.getId());
                 map.put("code",user1.getCode());
+                map.put("openid",user1.getOpenid());
                 list.add(map);
                 Map<String, Object> map1 = new HashMap<>();
                 map1.put("msg",msg);
                 map1.put("msgcode",msgcode);
                 map1.put("data",list);
+                setLog.setlod(500, "用户注册成功openid为："+openid);
                 return map1;
             }
             String msg="注册失败！";
@@ -69,11 +70,13 @@ public class WxController {
             map.put("code",user.getCode());
             map.put("tel",user.getTel());
             map.put("uid",user.getVxid());
+            map.put("openid",user.getOpenid());
             list.add(map);
             Map<String, Object> map1 = new HashMap<>();
             map1.put("msg",msg);
             map1.put("msgcode",msgcode);
             map1.put("data",list);
+            setLog.setlod(0, user.getId()+"用户登录");
             return map1;
         }
     }
@@ -128,6 +131,21 @@ public class WxController {
             map1.put("msg", "对不起您非本校师生！");
             return map1;
         }
+    }
+
+    @RequestMapping("/getuserByopenid")
+    public Map<String, Object> getuserByopenid(@RequestParam String openid) {
+            User user = userService.getUserByOpenid(openid);
+            List list = new ArrayList();
+            if (user!=null) {
+                list.add(user);
+            }
+            Map<String, Object> map1 = new HashMap<>();
+            map1.put("code", 0);
+            map1.put("msg", "ok");
+            map1.put("count", list.size());
+            map1.put("data", list);
+            return map1;
     }
 
     @RequestMapping("/getbxform")
@@ -192,7 +210,9 @@ public class WxController {
     public boolean renzheng(@RequestParam(value = "id") int id,
                           @RequestParam(value = "code") int code,
                             @RequestParam(value = "uname") String uname,
-                            @RequestParam(value = "school") String school) {
+                            @RequestParam(value = "school") String school,
+                            @RequestParam String xy,
+                            @RequestParam String zy) {
         int haveuser=0;
         int uid = 0;
         if (code==2){
@@ -224,6 +244,9 @@ public class WxController {
             if (user != null) {
                 user.setCode(code);
                 user.setVxid(uid);
+                user.setXy(xy);
+                user.setZy(zy);
+                user.setSname(uname);
                 if (userService.upUser(user)!=0)
                     return true;
             }
@@ -232,7 +255,7 @@ public class WxController {
     }
     @RequestMapping("/insertbxform")
     public boolean insertbxform(@RequestParam(value = "uid") int uid,
-                          @RequestParam(value = "info") String info,
+                                @RequestParam(value = "info") String info,
                                 @RequestParam(value = "address") String address,
                                 @RequestParam(value = "img") String img,
                                 @RequestParam(value = "bxlx") String bxlx) {
@@ -247,6 +270,23 @@ public class WxController {
         bxform.setTime(date);
         if (bxformService.insertBxform(bxform)!=0)
             return true;
+        return false;
+    }
+
+    @RequestMapping("/wechatupload")
+    public Object wechatupload(MultipartFile file, HttpServletRequest request) {
+        try {
+            String path = request.getSession().getServletContext().getRealPath("/upload/");
+            String image = UtilPacket.uploadImage(file, path);
+            if (image != null) {
+                setLog.setlod(request, "上传了文件名为:" + image + "的图片，路径为:" + path + "，完整路径为:" + path+"/"+image);
+                return image;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 }
