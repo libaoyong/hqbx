@@ -28,13 +28,16 @@ public class WxController {
 
     @RequestMapping("/vxlogin")
     public Map<String, Object> vxlogin (@RequestParam("code")String code){
+
         List<Map<String, Object>> list = new ArrayList<>();
         utilpack utilpackd = new utilpack();
         String appid = "wxa373c8c7e0c19c04";
         String key = "a6b6e93d27de45260480a8e137943490";
         String openid = utilpackd.getopenid(appid,key,code);
         User user = userService.getUserByOpenid(openid);
+
         if (user==null){
+
             User newuser=new User();
             newuser.setCode(5);
             newuser.setOpenid(openid);

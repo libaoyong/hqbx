@@ -32,12 +32,12 @@
        select time from bxform GROUP BY time
     </select>
 
-    <select id="getBxformByuid" parameterType="java.util.Date" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from bxform
-        where time = #{date,jdbcType=TIMESTAMP}
-    </select>
+  <select id="getBxformByuid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from bxform
+    where uid = #{id}
+  </select>
 
     <select id="getBxformBymid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
