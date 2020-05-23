@@ -33,20 +33,20 @@ public class SelectController {
     private  LogService logService;
 
     @RequestMapping("/selectxtrzgl")
-    public Map<String, Object> selectxtrzgl(HttpServletRequest httpServletRequest, @RequestParam(value = "page") int page,@RequestParam(value = "limit") int limit) {
+    public Map<String, Object> selectxtrzgl(HttpServletRequest httpServletRequest, @RequestParam(value = "page") Integer page,@RequestParam(value = "limit") Integer limit) {
         page = page-1;
-        int start = page*limit;
-        int end = (page+1)*limit-1;
+        Integer start = page*limit;
+        Integer end = (page+1)*limit-1;
         List<Log> logs = logService.getlogList();
-        int datacount = logs.size();
-        int i = 0;
+        Integer datacount = logs.size();
+        Integer i = 0;
         List<Map<String, Object>> list = new ArrayList<>();
         if (logs != null) {
             for (Log log : logs) {
                 if (i>=start&&i<=end){
-                    int id = log.getId();
+                    Integer id = log.getId();
                     String cz = log.getCz();
-                    int czr = log.getCzr();
+                    Integer czr = log.getCzr();
                     Date time = log.getTime();
                     String czrstr ="System";
                     if (adminService.getAdminById(czr)!=null) {
@@ -80,7 +80,7 @@ public class SelectController {
         List<Map<String, Object>> list = new ArrayList<>();
         if (menus != null) {
             for (Menu menu : menus) {
-                int id = menu.getId();
+                Integer id = menu.getId();
                 String fdm = null;
                 if(menu.getFdm()!=null&&menu.getFdm()!="") {
                     fdm = menuService.selectByPrimaryKey(Integer.parseInt(menu.getFdm())).getMenuname();
@@ -111,7 +111,7 @@ public class SelectController {
         List<Map<String, Object>> list = new ArrayList<>();
         if (groupinfos != null) {
             for (Groupinfo groupinfo : groupinfos) {
-                int id = groupinfo.getId();
+                Integer id = groupinfo.getId();
                 String qx = groupinfo.getQx();
                 String groupname = groupinfo.getGroupname();
                 String qxs[] ={};
@@ -124,10 +124,10 @@ public class SelectController {
                 Map child = selectfcd(httpServletRequest);
                 List childdatas = (List) child.get("data");
                 List childsmap = new ArrayList();
-                for (int i = 0 ;i<childdatas.size();i++){
+                for (Integer i = 0 ;i<childdatas.size();i++){
                     boolean sfxz = false;
                     Map childmap = (Map)childdatas.get(i);
-                    int childid = Integer.parseInt(String.valueOf(childmap.get("id")));
+                    Integer childid = Integer.parseInt(String.valueOf(childmap.get("id")));
                     String aaaa= Arrays.toString(qxs);
                     if (aaaa.length()>2&&qxs!=null) {
                         for (String qxbsstr : qxs) {
@@ -159,7 +159,7 @@ public class SelectController {
         List<Map<String, Object>> list = new ArrayList<>();
         if (menus != null) {
             for (Menu menu : menus) {
-                int id = menu.getId();
+                Integer id = menu.getId();
                 String menuname = menu.getMenuname();
                 Map map = new HashMap();
                 map.put("id", id);
@@ -181,7 +181,7 @@ public class SelectController {
         List<Map<String, Object>> list = new ArrayList<>();
         if (students != null) {
             for (Student student : students) {
-                int id = student.getId();
+                Integer id = student.getId();
                 String uname = student.getUname();
                 String classes = student.getClasses();
                 String major = student.getMajor();
@@ -215,7 +215,7 @@ public class SelectController {
         List<Map<String, Object>> list = new ArrayList<>();
         if (teachers != null) {
             for (Teacher teacher : teachers) {
-                int id = teacher.getId();
+                Integer id = teacher.getId();
                 String uname = teacher.getUname();
                 String zyzc = teacher.getZyzc();
                 String school = teacher.getSchool();
@@ -295,7 +295,7 @@ public class SelectController {
         List<Map<String, Object>> list = new ArrayList<>();
         if (maintainers != null) {
             for (Maintainer maintainer : maintainers) {
-                int id = maintainer.getId();
+                Integer id = maintainer.getId();
                 String uname = maintainer.getUname();
                 Map map = new HashMap();
                 map.put("id", id);
@@ -318,7 +318,7 @@ public class SelectController {
         List<Map<String, Object>> list = new ArrayList<>();
         if (admins != null) {
             for (Admin admin : admins) {
-                int id = admin.getId();
+                Integer id = admin.getId();
                 String uname = admin.getUname();
                 Map map = new HashMap();
                 map.put("id", id);
@@ -341,24 +341,17 @@ public class SelectController {
         List<Map<String, Object>> list = new ArrayList<>();
         if (bxforms != null) {
             for (Bxform bxform : bxforms) {
-                int id = bxform.getId();
-                int uid = bxform.getUid();
-                int ztid = bxform.getZtid();
+                Integer id = bxform.getId();
+                Integer uid = bxform.getUid();
+                Integer ztid = bxform.getZtid();
                 String address = bxform.getAddress();
                 String bxlx = bxform.getBxlx();
                 String img = bxform.getImg();
-                int mid = bxform.getMid();
+                Integer mid = bxform.getMid();
                 Date time = bxform.getTime();
-                String uidstr = "查无此人";
+                String uname = bxform.getUname();
+                String tel = bxform.getTel();
                 String ztstr = "状态服务错误";
-                int uidcode = userService.getUserByUid(uid).getCode();
-                //1学生2教师
-                if (uidcode==2){
-                    uidstr = teacherService.getTeacherById(uid).getUname();
-                }
-                if (uidcode==1){
-                    uidstr = studentService.getStudentByid(uid).getUname();
-                }
                 //0未处理1已分配维修工2维修工已确认3订单完成
                 if (ztid==0){
                     ztstr="未处理";
@@ -372,11 +365,15 @@ public class SelectController {
                 if (ztid==3){
                     ztstr="订单完成";
                 }
-                String midstr = maintainerService.getMaintainerById(mid).getUname();
+                String midstr = "未分配维修工";
+                if (mid!=null)
+                midstr = maintainerService.getMaintainerById(mid).getUname();
                 Map map = new HashMap();
                 map.put("id", id);
-                map.put("uid", uidstr);
+                map.put("uid", uid);
                 map.put("ztid", ztstr);
+                map.put("uname",uname);
+                map.put("tel",tel);
                 map.put("address", address);
                 map.put("bxlx", bxlx);
                 map.put("img", img);
@@ -405,24 +402,17 @@ public class SelectController {
             List<Bxform> bxforms = bxformService.getBxformBymid(wxgid);
             if (bxforms != null) {
                 for (Bxform bxform : bxforms) {
-                    int id = bxform.getId();
-                    int uid = bxform.getUid();
-                    int ztid = bxform.getZtid();
+                    Integer id = bxform.getId();
+                    Integer uid = bxform.getUid();
+                    Integer ztid = bxform.getZtid();
                     String address = bxform.getAddress();
                     String bxlx = bxform.getBxlx();
                     String img = bxform.getImg();
-                    int mid = bxform.getMid();
+                    Integer mid = bxform.getMid();
                     Date time = bxform.getTime();
-                    String uidstr = "查无此人";
+                    String uname = bxform.getUname();
+                    String tel = bxform.getTel();
                     String ztstr = "状态服务错误";
-                    int uidcode = userService.getUserByUid(uid).getCode();
-                    //1学生2教师
-                    if (uidcode == 2) {
-                        uidstr = teacherService.getTeacherById(uid).getUname();
-                    }
-                    if (uidcode == 1) {
-                        uidstr = studentService.getStudentByid(uid).getUname();
-                    }
                     //0未处理1已分配维修工2维修工已确认3订单完成
                     if (ztid == 0) {
                         ztstr = "未处理";
@@ -439,8 +429,10 @@ public class SelectController {
                     String midstr = maintainerService.getMaintainerById(mid).getUname();
                     Map map = new HashMap();
                     map.put("id", id);
-                    map.put("uid", uidstr);
+                    map.put("uid", uid);
                     map.put("ztid", ztstr);
+                    map.put("uname",uname);
+                    map.put("tel",tel);
                     map.put("address", address);
                     map.put("bxlx", bxlx);
                     map.put("img", img);
@@ -467,7 +459,7 @@ public class SelectController {
         if (bxforms != null) {
             for (Bxform bxform : bxforms) {
                 if (bxform.getMid()==null||bxform.getMid().equals("")){
-                    int id = bxform.getId();
+                    Integer id = bxform.getId();
                     list.add(id);
                 }
             }
@@ -487,7 +479,7 @@ public class SelectController {
         List<Map<String, Object>> list = new ArrayList<>();
         if (maintainers != null) {
             for (Maintainer maintainer : maintainers) {
-                    int id = maintainer.getId();
+                    Integer id = maintainer.getId();
                     String uname = maintainer.getUname();
                     Map map = new HashMap();
                     map.put("id", id);
@@ -511,7 +503,7 @@ public class SelectController {
                              @RequestParam(value = "newpass2")String newpass2,
                              HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
-        int code = 500;
+        Integer code = 500;
         String msg= "账号服务器错误！";
         UserInfo users = (UserInfo) session.getAttribute("islogin");
         String upass = users.getPassword();

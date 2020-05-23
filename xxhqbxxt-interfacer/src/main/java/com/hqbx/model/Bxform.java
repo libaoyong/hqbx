@@ -22,6 +22,10 @@ public class Bxform implements Serializable {
 
     private String bxlx;
 
+    private String uname;
+
+    private String tel;
+
     public Integer getId() {
         return id;
     }
@@ -94,6 +98,22 @@ public class Bxform implements Serializable {
         this.bxlx = bxlx == null ? null : bxlx.trim();
     }
 
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname == null ? null : uname.trim();
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel == null ? null : tel.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -109,6 +129,8 @@ public class Bxform implements Serializable {
         sb.append(", uid=").append(uid);
         sb.append(", mid=").append(mid);
         sb.append(", bxlx=").append(bxlx);
+        sb.append(", uname=").append(uname);
+        sb.append(", tel=").append(tel);
         sb.append("]");
         return sb.toString();
     }

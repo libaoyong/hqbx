@@ -162,6 +162,8 @@ public class WxController {
                 String bxlx = bxform.getBxlx();
                 String img = bxform.getImg();
                 String info = bxform.getInfo();
+                String uname = bxform.getUname();
+                String tel = bxform.getTel();
                 Date time = bxform.getTime();
                 int ztid = bxform.getZtid();
                 String ztstr= "不可预料的错误！";
@@ -186,9 +188,57 @@ public class WxController {
                 map.put("info", info);
                 map.put("time", time);
                 map.put("ztid", ztstr);
+                map.put("uname", uname);
+                map.put("tel", tel);
                 list.add(map);
             }
         }
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("code", 0);
+        map1.put("msg", "ok");
+        map1.put("count", list.size());
+        map1.put("data", list);
+        return map1;
+    }
+
+    @RequestMapping("/getbxformByid")
+    public Map<String, Object> getbxformByid(int bxid) {
+        Bxform bxform = bxformService.getBxformById(bxid);
+        List<Map<String, Object>> list = new ArrayList<>();
+                int id = bxform.getId();
+                String address = bxform.getAddress();
+                String bxlx = bxform.getBxlx();
+                String img = bxform.getImg();
+                String info = bxform.getInfo();
+                String uname = bxform.getUname();
+                String tel = bxform.getTel();
+                Date time = bxform.getTime();
+                int ztid = bxform.getZtid();
+                String ztstr= "不可预料的错误！";
+                //0未处理1已分配维修工2维修工已确认3订单完成
+                if (ztid==0){
+                    ztstr="未处理";
+                }
+                if (ztid==1){
+                    ztstr="已分配维修工";
+                }
+                if (ztid==2){
+                    ztstr="维修工已确认";
+                }
+                if (ztid==3){
+                    ztstr="订单完成";
+                }
+                Map map = new HashMap();
+                map.put("id", id);
+                map.put("address", address);
+                map.put("bxlx", bxlx);
+                map.put("img", img);
+                map.put("info", info);
+                map.put("time", time);
+                map.put("ztid", ztstr);
+                map.put("uname", uname);
+                map.put("tel", tel);
+                list.add(map);
         Map<String, Object> map1 = new HashMap<>();
         map1.put("code", 0);
         map1.put("msg", "ok");
@@ -261,7 +311,9 @@ public class WxController {
                                 @RequestParam(value = "info") String info,
                                 @RequestParam(value = "address") String address,
                                 @RequestParam(value = "img") String img,
-                                @RequestParam(value = "bxlx") String bxlx) {
+                                @RequestParam(value = "bxlx") String bxlx,
+                                @RequestParam String uname,
+                                @RequestParam String tel) {
         Bxform bxform = new Bxform();
         Date date = new Date(new Date().getTime()+(8*3600*1000));
         bxform.setZtid(0);
@@ -271,6 +323,8 @@ public class WxController {
         bxform.setInfo(info);
         bxform.setUid(uid);
         bxform.setTime(date);
+        bxform.setUname(uname);
+        bxform.setTel(tel);
         if (bxformService.insertBxform(bxform)!=0)
             return true;
         return false;

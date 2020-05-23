@@ -11,9 +11,11 @@
     <result column="uid" jdbcType="INTEGER" property="uid" />
     <result column="mid" jdbcType="INTEGER" property="mid" />
     <result column="bxlx" jdbcType="VARCHAR" property="bxlx" />
+    <result column="uname" jdbcType="VARCHAR" property="uname" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, info, address, time, ztid, img, uid, mid, bxlx
+    id, info, address, time, ztid, img, uid, mid, bxlx,uname,tel
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -32,12 +34,12 @@
        select time from bxform GROUP BY time
     </select>
 
-  <select id="getBxformByuid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from bxform
-    where uid = #{id}
-  </select>
+    <select id="getBxformByuid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from bxform
+        where uid = #{id}
+    </select>
 
     <select id="getBxformBymid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -61,10 +63,10 @@
   <insert id="insert" parameterType="com.hqbx.model.Bxform">
     insert into bxform (id, info, address, 
       time, ztid, img, 
-      uid, mid, bxlx)
+      uid, mid, bxlx,uname,tel)
       values (#{id,jdbcType=INTEGER}, #{info,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
       #{time,jdbcType=TIMESTAMP}, #{ztid,jdbcType=INTEGER}, #{img,jdbcType=VARCHAR}, 
-      #{uid,jdbcType=INTEGER}, #{mid,jdbcType=INTEGER}, #{bxlx,jdbcType=VARCHAR})
+      #{uid,jdbcType=INTEGER}, #{mid,jdbcType=INTEGER}, #{bxlx,jdbcType=VARCHAR}), #{uname,jdbcType=VARCHAR}), #{tel,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hqbx.model.Bxform">
     insert into bxform
@@ -96,6 +98,12 @@
       <if test="bxlx != null">
         bxlx,
       </if>
+      <if test="uname != null">
+        uname,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -124,6 +132,12 @@
       </if>
       <if test="bxlx != null">
         #{bxlx,jdbcType=VARCHAR},
+      </if>
+      <if test="uname != null">
+        #{uname,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -154,6 +168,12 @@
       <if test="bxlx != null">
         bxlx = #{bxlx,jdbcType=VARCHAR},
       </if>
+      <if test="uname != null">
+        uname = #{uname,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -166,7 +186,9 @@
       img = #{img,jdbcType=VARCHAR},
       uid = #{uid,jdbcType=INTEGER},
       mid = #{mid,jdbcType=INTEGER},
-      bxlx = #{bxlx,jdbcType=VARCHAR}
+      bxlx = #{bxlx,jdbcType=VARCHAR},
+      uname = #{uname,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
